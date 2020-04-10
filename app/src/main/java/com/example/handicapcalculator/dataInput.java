@@ -1,21 +1,21 @@
 package com.example.handicapcalculator;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class dataInput extends AppCompatActivity {
 
-    Intent gatherData, toResults;
     Button calculateBtn;
+    TextView valueDisplayTv;
     EditText t1S1, t1S2, t1S3, t1S4, t1S5, t2S1, t2S2, t2S3, t2S4, t2S5, handicapValue;
     int totalT1, totalT2, t1Score1, t1Score2, t1Score3, t1Score4, t1Score5, t2Score1, t2Score2, t2Score3, t2Score4, t2Score5,
             handicap;
     double handicapDouble, difference, aveT1, aveT2;
-    String result, info;
+    String result, teamInfo, valueDisplay;
 
 
     @Override
@@ -35,9 +35,9 @@ public class dataInput extends AppCompatActivity {
         t2S5=findViewById(R.id.T2S5);
         handicapValue=findViewById(R.id.handicapValueTv);
         calculateBtn=findViewById(R.id.calculateButton);
+        valueDisplayTv=findViewById(R.id.valueDisplayTV);
 
-        //transition Call
-        toResults =new Intent(this,ResultsScreen);
+
 
         calculateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,13 +60,18 @@ public class dataInput extends AppCompatActivity {
 
                 if(totalT1>totalT2)
                 {
-                    info = "Team 2 gets: ";
+                    calculation(totalT1, totalT2);
+                    teamInfo = "Team 2 gets: ";
+                    valueDisplay= teamInfo + calculation(totalT1, totalT2);
+                    valueDisplayTv.setText(valueDisplay);
                 }
                 else
-                    info = "Team 1 gets: ";
-
-                toResults.putExtra("info", info);
-                toResults.putExtra("result", calculation(totalT1, totalT2));
+                {
+                    calculation(totalT1, totalT2);
+                    teamInfo = "Team 1 gets: ";
+                    valueDisplay = teamInfo + calculation(totalT1, totalT2);
+                    valueDisplayTv.setText(valueDisplay);
+                }
 
             }
         });
@@ -77,7 +82,7 @@ public class dataInput extends AppCompatActivity {
         double total1=t1;
         double total2=t2;
 
-        handicap=Integer.parseInt(t1S2.getText().toString());
+        handicap=Integer.parseInt(handicapValue.getText().toString());
         handicapDouble=(double)handicap/100;
 
         if(total1>total2)
